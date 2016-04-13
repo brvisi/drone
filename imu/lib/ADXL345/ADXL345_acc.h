@@ -1,5 +1,3 @@
-#include "Arduino.h"
-
 #define ADXL345_POWER_CTL 0x2d
 
 #define ADXL345_DATAX0 0x32

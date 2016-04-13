@@ -1,6 +1,6 @@
 #include "Arduino.h"
 #include "ADXL345_acc.h"
-#include <Wire.h>
+#include "Wire.h"
 
 ADXL345::ADXL345() 	{
 	/*gains[0] = 0.00376390;

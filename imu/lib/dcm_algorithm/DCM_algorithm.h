@@ -1,6 +1,6 @@
 #include "Arduino.h"
 
-
+/*
 class IMU
 {
 public:
@@ -12,7 +12,7 @@ private:
 
 
 };
-
+*/
 
 
 

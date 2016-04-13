@@ -1,3 +1,4 @@
+#include "Arduino.h"
 
 #include <ADXL345_acc.h>
 #include <ITG3200_gyro.h>
