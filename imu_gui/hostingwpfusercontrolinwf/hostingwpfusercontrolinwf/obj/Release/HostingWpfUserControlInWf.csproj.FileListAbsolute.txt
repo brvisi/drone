@@ -1,0 +1,10 @@
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\bin\Release\HostingWpfUserControlInWf.dll
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\bin\Release\HostingWpfUserControlInWf.pdb
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\UserControl1.baml
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\UserControl1.g.cs
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf_MarkupCompile.cache
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.g.resources
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.Properties.Resources.resources
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.csproj.GenerateResource.Cache
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.dll
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.pdb

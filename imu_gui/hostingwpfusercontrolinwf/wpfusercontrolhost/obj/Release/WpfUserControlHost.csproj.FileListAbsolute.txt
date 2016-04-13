@@ -1,0 +1,1 @@
+c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\WpfUserControlHost\bin\Release\WpfUserControlHost.exe.config
