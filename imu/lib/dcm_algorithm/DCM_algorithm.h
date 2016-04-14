@@ -1,32 +1,40 @@
 #include "Arduino.h"
+#include "ADXL345_acc.h"
+#include "HMC5883L_mag.h"
+#include "ITG3200_gyro.h"
 
-/*
-class IMU
+class Imu
 {
 public:
-	getOrientation(int algorithm, float pitch, float roll, float yaw);
-
-
+	Imu();
+	float* getOrientation(int algorithm, float G_dt);
 
 private:
+	ADXL345 accelerometer;
+	ITG3200 gyroscope;
+	HMC5883L magnetometer;
 
+	float dcmMatrix[3][3];
+	float orientation[3]; //pitch, roll, yaw
 
+	float accVector[3]; //Store the acceleration in a vector
+	float magVector[3];
+	float gyrVector[3];
+
+	void dcmAlgorithm(float G_dt, bool driftCorrection, float& pitch, float& roll, float& yaw);
+
+	void initRotationMatrix();
+	void matrixUpdate(float acc[3], float gyro[3], float G_Dt, bool drift_correction);
+	void normalize();
+	void driftCorrection(float mag_heading);
+	float magnetoHeading(float magnetometer[3], float accelerometer[3]);
+	void eulerAngles();
+	void retrieveRotationMatrix(float Rotation_Matrix[3][3]);
 };
-*/
 
 
 
 
-void DCM_algorithm(float acc[3], float gyro[3], float mag[3], float G_dt, bool drift_correction, float& pitch, float& roll, float& yaw);
 
 
-
-void init_rotation_matrix(float yaw, float pitch, float roll);
-void Matrix_update(float acc[3], float gyro[3], float G_Dt, bool drift_correction);
-void Normalize();
-void Drift_correction(float mag_heading);
-float magneto_heading(float magnetometer[3], float accelerometer[3]);
-
-void Euler_angles(float pitch, float roll, float yaw);
-void Retrieve_rotation_matrix(float Rotation_Matrix[3][3]);
 

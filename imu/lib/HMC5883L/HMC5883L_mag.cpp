@@ -1,7 +1,6 @@
 #include "Arduino.h"
 #include "HMC5883L_mag.h"
-#include <Wire.h>
-#include <EEPROM.h>
+#include "Wire.h"
 
 HMC5883L::HMC5883L() 	{
 

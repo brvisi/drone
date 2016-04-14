@@ -1,16 +1,13 @@
-#include "Arduino.h"
 #include "DCM_algorithm.h"
 #include "Matrix_Vector_Math.h"
 
 const float gravity = 256.0f;
+const float pi = 3.14159265359;
 
-float Kp_ROLLPITCH = 0.02f;
-float Ki_ROLLPITCH = 0.00002f;
-float Kp_YAW = 1.2f;
-float Ki_YAW = 0.00002f;
-
-float accel_Vector[3] = { 0, 0, 0 }; // Store the acceleration in a vector
-float gyro_Vector[3] = { 0, 0, 0 }; // Store the gyros turn rate in a vector
+const float Kp_ROLLPITCH = 0.02f;
+const float Ki_ROLLPITCH = 0.00002f;
+const float Kp_YAW = 1.2f;
+const float Ki_YAW = 0.00002f;
 
 float Omega_Vector[3] = { 0, 0, 0 }; // Corrected Gyro_Vector data
 float Omega_P[3] = { 0, 0, 0 }; // Omega Proportional correction
@@ -21,45 +18,129 @@ float errorYaw[3] = { 0, 0, 0 };
 
 float Update_Matrix[3][3] ={{ 0, 1, 2 },{ 3, 4, 5 },{ 6, 7, 8 }};
 float Temporary_Matrix[3][3] ={{ 0, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 }};
-float DCM_Matrix[3][3] = { { 0, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 } };
 
-float pi = 3.14159265359;
 String stringDCMMat;
 
-
-void DCM_algorithm(float acc[3], float gyro[3], float mag[3], float G_dt, bool drift_correction, float& pitch_deg, float& roll_deg, float& yaw_deg)
+Imu::Imu()
 {
-	Matrix_update(acc, gyro, G_dt, drift_correction);
-	Normalize();
-	Drift_correction(magneto_heading(mag, acc));
+	accelerometer.initialize();
+	delay(10);
+	gyroscope.initialize();
+	delay(10);
+	magnetometer.initialize();
+	delay(10);
+
+	initRotationMatrix();
+}
+
+float* Imu::getOrientation(int algorithm, float G_dt)
+{
+/*
+	float pitch, roll, yaw;
+	float xAxis[3] = { 1.0f, 0.0f, 0.0f };
+	float temp1[3] = { 0, 0, 0};
+	float temp2[3] = { 0, 0, 0};
+
+	accelerometer.readAccel(accVector);
+
+	gyroscope.readGyro(gyrVector);
+	gyroscope.scaleGyro(gyrVector);
+
+	magnetometer.readMag(magVector);
+	magnetometer.scaleMag(magVector);
+
+	pitch = atan2(accVector[0], sqrt(accVector[1] * accVector[1] + accVector[2] * accVector[2]));
+
+	Vector_Cross_Product(temp1, accVector, xAxis);
+	Vector_Cross_Product(temp2, xAxis, temp1);
+
+	roll = atan2(temp2[1], temp2[2]);
+
+	// Tilt compensated magnetic field X
+	float mag_x = magVector[0] * cos(pitch) + magVector[1] * sin(roll) * sin(pitch) + magVector[2] * cos(roll) * sin(pitch);
+	// Tilt compensated magnetic field Y
+	float mag_y = magVector[1] * cos(roll) - magVector[2] * sin(roll);
+	yaw = atan2(mag_y, mag_x);
+
+	orientation[0] = pitch;
+	orientation[1] = roll;
+	orientation[2] = yaw;
+	return orientation;
+*/
+	accelerometer.readAccel(accVector);
+
+	gyroscope.readGyro(gyrVector);
+	gyroscope.scaleGyro(gyrVector);
+
+	magnetometer.readMag(magVector);
+	magnetometer.scaleMag(magVector);
+
+	float pitch, roll, yaw;
+
+
+	dcmAlgorithm(G_dt, true, pitch, roll, yaw );
+
+	orientation[0] = pitch;
+	orientation[1] = roll;
+	orientation[2] = yaw;
+	return orientation;
+
+}
+
+void Imu::dcmAlgorithm(float G_dt, bool drift_correction, float& pitch_deg, float& roll_deg, float& yaw_deg)
+{
+	matrixUpdate(accVector, gyrVector, G_dt, drift_correction);
+	normalize();
+	driftCorrection(magnetoHeading(magVector, accVector));
 	
 	/*
 	stringDCMMat = "DCM MAT: ";
 	for (int i = 0; i<3; i++)
 	{
 		for (int j = 0; j<3; j++) {
-			stringDCMMat += String(DCM_Matrix[i][j]) + " ";
+			stringDCMMat += String(dcmMatrix[i][j]) + " ";
 		}
 	}
 
 	Serial.println(stringDCMMat);
 	*/
 
-	pitch_deg = -asin(DCM_Matrix[2][0]);
-	roll_deg = atan2(DCM_Matrix[2][1], DCM_Matrix[2][2]);
-	yaw_deg = atan2(DCM_Matrix[1][0], DCM_Matrix[0][0]);
+	pitch_deg = -asin(dcmMatrix[2][0]);
+	roll_deg = atan2(dcmMatrix[2][1], dcmMatrix[2][2]);
+	yaw_deg = atan2(dcmMatrix[1][0], dcmMatrix[0][0]);
 
 	pitch_deg *= (180/pi);
 	roll_deg *= (180/pi);
 	yaw_deg *= (180/pi);
-	
-
 }
 
-
-
-void init_rotation_matrix(float yaw, float pitch, float roll)
+void Imu::initRotationMatrix()
 {
+	float pitch, roll, yaw;
+	float xAxis[3] = { 1.0f, 0.0f, 0.0f };
+	float temp1[3] = { 0, 0, 0};
+	float temp2[3] = { 0, 0, 0};
+
+	accelerometer.readAccel(accVector);
+
+	gyroscope.readGyro(gyrVector);
+	gyroscope.scaleGyro(gyrVector);
+
+	magnetometer.readMag(magVector);
+	magnetometer.scaleMag(magVector);
+
+	pitch = atan2(accVector[0], sqrt(accVector[1] * accVector[1] + accVector[2] * accVector[2]));
+
+	Vector_Cross_Product(temp1, accVector, xAxis);
+	Vector_Cross_Product(temp2, xAxis, temp1);
+
+	roll = atan2(temp2[1], temp2[2]);
+
+	// Tilt compensated magnetic field X
+	float mag_x = magVector[0] * cos(pitch) + magVector[1] * sin(roll) * sin(pitch) + magVector[2] * cos(roll) * sin(pitch);
+	// Tilt compensated magnetic field Y
+	float mag_y = magVector[1] * cos(roll) - magVector[2] * sin(roll);
+	yaw = atan2(mag_y, mag_x);
 
 
 	float c1 = cos(roll);
@@ -71,51 +152,46 @@ void init_rotation_matrix(float yaw, float pitch, float roll)
 
 	// Euler angles, right-handed, intrinsic, XYZ convention
 	// (which means: rotate around body axes Z, Y', X'') 
-	DCM_Matrix[0][0] = c2 * c3;
-	DCM_Matrix[0][1] = c3 * s1 * s2 - c1 * s3;
-	DCM_Matrix[0][2] = s1 * s3 + c1 * c3 * s2;
+	dcmMatrix[0][0] = c2 * c3;
+	dcmMatrix[0][1] = c3 * s1 * s2 - c1 * s3;
+	dcmMatrix[0][2] = s1 * s3 + c1 * c3 * s2;
 
-	DCM_Matrix[1][0] = c2 * s3;
-	DCM_Matrix[1][1] = c1 * c3 + s1 * s2 * s3;
-	DCM_Matrix[1][2] = c1 * s2 * s3 - c3 * s1;
+	dcmMatrix[1][0] = c2 * s3;
+	dcmMatrix[1][1] = c1 * c3 + s1 * s2 * s3;
+	dcmMatrix[1][2] = c1 * s2 * s3 - c3 * s1;
 
-	DCM_Matrix[2][0] = -s2;
-	DCM_Matrix[2][1] = c2 * s1;
-	DCM_Matrix[2][2] = c1 * c2;
-
-	
+	dcmMatrix[2][0] = -s2;
+	dcmMatrix[2][1] = c2 * s1;
+	dcmMatrix[2][2] = c1 * c2;
 
 }
 
-
-
-
-void Matrix_update(float acc[3], float gyro[3], float G_Dt, bool drift_correction)
+void Imu::matrixUpdate(float acc[3], float gyro[3], float G_Dt, bool drift_correction)
 {
 	
-	gyro_Vector[0] = gyro[0] * (pi/180); //gyro x roll RADIANS
-	gyro_Vector[1] = gyro[1] * (pi/180); //gyro y pitch RADIANS
-	gyro_Vector[2] = gyro[2] * (pi/180); //gyro z yaw RADIANS
+	gyrVector[0] = gyro[0] * (pi/180); //gyro x roll RADIANS
+	gyrVector[1] = gyro[1] * (pi/180); //gyro y pitch RADIANS
+	gyrVector[2] = gyro[2] * (pi/180); //gyro z yaw RADIANS
 	
 	
-	accel_Vector[0] = acc[0];
-	accel_Vector[1] = acc[1];
-	accel_Vector[2] = acc[2];
+	accVector[0] = acc[0];
+	accVector[1] = acc[1];
+	accVector[2] = acc[2];
 
-	Vector_Add(Omega, gyro_Vector, Omega_I);  //adding proportional term
+	Vector_Add(Omega, gyrVector, Omega_I);  //adding proportional term
 	Vector_Add(Omega_Vector, Omega, Omega_P); //adding Integrator term
 
 
 	if (!drift_correction)
 	{
 		Update_Matrix[0][0] = 0;
-		Update_Matrix[0][1] = -G_Dt * gyro_Vector[2];//-z
-		Update_Matrix[0][2] = G_Dt * gyro_Vector[1];//y
-		Update_Matrix[1][0] = G_Dt * gyro_Vector[2];//z
+		Update_Matrix[0][1] = -G_Dt * gyrVector[2];//-z
+		Update_Matrix[0][2] = G_Dt * gyrVector[1];//y
+		Update_Matrix[1][0] = G_Dt * gyrVector[2];//z
 		Update_Matrix[1][1] = 0;
-		Update_Matrix[1][2] = -G_Dt * gyro_Vector[0];
-		Update_Matrix[2][0] = -G_Dt * gyro_Vector[1];
-		Update_Matrix[2][1] = G_Dt * gyro_Vector[0];
+		Update_Matrix[1][2] = -G_Dt * gyrVector[0];
+		Update_Matrix[2][0] = -G_Dt * gyrVector[1];
+		Update_Matrix[2][1] = G_Dt * gyrVector[0];
 		Update_Matrix[2][2] = 0;
 	}
 	else
@@ -132,51 +208,51 @@ void Matrix_update(float acc[3], float gyro[3], float G_Dt, bool drift_correctio
 		Update_Matrix[2][2] = 0;
 	}
 
-	Matrix_Multiply(DCM_Matrix, Update_Matrix, Temporary_Matrix); //a*b=c
+	Matrix_Multiply(dcmMatrix, Update_Matrix, Temporary_Matrix); //a*b=c
 
 	for (int x = 0; x < 3; x++) //Matrix Addition (update)
 	{
 		for (int y = 0; y < 3; y++)
 		{
-			DCM_Matrix[x][y] += Temporary_Matrix[x][y];
+			dcmMatrix[x][y] += Temporary_Matrix[x][y];
 		}
 	}
 
 };
 
 
-void Normalize() 
+void Imu::normalize()
 {
 
 	float error = 0;
 	float temporary[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
 	float renorm = 0;
 
-	error = -Vector_Dot_Product(DCM_Matrix[0], DCM_Matrix[1]) * .5F; //eq.18/19 //Produto (.) escalar das duas primeiras LINHAS
+	error = -Vector_Dot_Product(dcmMatrix[0], dcmMatrix[1]) * .5F; //eq.18/19 //Produto (.) escalar das duas primeiras LINHAS
 
-	Vector_Scale(temporary[0], DCM_Matrix[1], error); //eq.19
-	Vector_Scale(temporary[1], DCM_Matrix[0], error); //eq.19
+	Vector_Scale(temporary[0], dcmMatrix[1], error); //eq.19
+	Vector_Scale(temporary[1], dcmMatrix[0], error); //eq.19
 
 
-	Vector_Add(temporary[0], temporary[0], DCM_Matrix[0]);//eq.19
-	Vector_Add(temporary[1], temporary[1], DCM_Matrix[1]);//eq.19
+	Vector_Add(temporary[0], temporary[0], dcmMatrix[0]);//eq.19
+	Vector_Add(temporary[1], temporary[1], dcmMatrix[1]);//eq.19
 
 
 	Vector_Cross_Product(temporary[2], temporary[0], temporary[1]); // c= a x b //eq.20 Produto vetorial dos vetores com erro em consideração
 
 	renorm = (float).5 * (3 - Vector_Dot_Product(temporary[0], temporary[0])); //eq.21
-	Vector_Scale(DCM_Matrix[0], temporary[0], renorm);
+	Vector_Scale(dcmMatrix[0], temporary[0], renorm);
 
 	renorm = (float).5 * (3 - Vector_Dot_Product(temporary[1], temporary[1])); //eq.21
-	Vector_Scale(DCM_Matrix[1], temporary[1], renorm);
+	Vector_Scale(dcmMatrix[1], temporary[1], renorm);
 
 	renorm = (float).5 * (3 - Vector_Dot_Product(temporary[2], temporary[2])); //eq.21
-	Vector_Scale(DCM_Matrix[2], temporary[2], renorm);
+	Vector_Scale(dcmMatrix[2], temporary[2], renorm);
 
 }
 
 
-void Drift_correction(float mag_heading)
+void Imu::driftCorrection(float mag_heading)
 {
 	float mag_heading_x;
 	float mag_heading_y;
@@ -191,13 +267,13 @@ void Drift_correction(float mag_heading)
 	//*****Roll and Pitch***************
 
 	// Calculate the magnitude of the accelerometer vector
-	Accel_magnitude = sqrt(accel_Vector[0] * accel_Vector[0] + accel_Vector[1] * accel_Vector[1] + accel_Vector[2] * accel_Vector[2]);
+	Accel_magnitude = sqrt(accVector[0] * accVector[0] + accVector[1] * accVector[1] + accVector[2] * accVector[2]);
 	Accel_magnitude = Accel_magnitude / gravity; // Scale to gravity.
 												 // Dynamic weighting of accelerometer info (reliability filter)
 												 // Weight for accelerometer info (<0.5G = 0.0, 1G = 1.0 , >1.5G = 0.0)
 	Accel_weight = constrain(1 - 2 * abs(1 - Accel_magnitude), 0, 1);  //  
 
-	Vector_Cross_Product(errorRollPitch, accel_Vector, DCM_Matrix[2]); //adjust the ground of reference
+	Vector_Cross_Product(errorRollPitch, accVector, dcmMatrix[2]); //adjust the ground of reference
 	Vector_Scale(Omega_P, errorRollPitch, Kp_ROLLPITCH * Accel_weight);
 
 	Vector_Scale(Scaled_Omega_I, errorRollPitch, Ki_ROLLPITCH * Accel_weight);
@@ -209,8 +285,8 @@ void Drift_correction(float mag_heading)
 
 	mag_heading_x = cos(mag_heading);
 	mag_heading_y = sin(mag_heading);
-	errorCourse = (DCM_Matrix[0][0] * mag_heading_y) - (DCM_Matrix[1][0] * mag_heading_x);  //Calculating YAW error
-	Vector_Scale(errorYaw, DCM_Matrix[2], errorCourse); //Applys the yaw correction to the XYZ rotation of the aircraft, depeding the position.
+	errorCourse = (dcmMatrix[0][0] * mag_heading_y) - (dcmMatrix[1][0] * mag_heading_x);  //Calculating YAW error
+	Vector_Scale(errorYaw, dcmMatrix[2], errorCourse); //Applys the yaw correction to the XYZ rotation of the aircraft, depeding the position.
 
 	Vector_Scale(Scaled_Omega_P, errorYaw, Kp_YAW);//.01proportional of YAW.
 	Vector_Add(Omega_P, Omega_P, Scaled_Omega_P);//Adding  Proportional.
@@ -219,7 +295,7 @@ void Drift_correction(float mag_heading)
 	Vector_Add(Omega_I, Omega_I, Scaled_Omega_I);//adding integrator to the Omega_I
 }
 
-float magneto_heading(float magnetometer[3], float accelerometer[3])
+float Imu::magnetoHeading(float magnetometer[3], float accelerometer[3])
 {
 	float temp1[3];
 	float temp2[3];
@@ -240,18 +316,15 @@ float magneto_heading(float magnetometer[3], float accelerometer[3])
 
 }
 
-
-void Euler_angles(float pitch, float roll, float yaw)
+void Imu::eulerAngles()
 {
-	pitch = -asin(DCM_Matrix[2][0]);
-	roll = atan2(DCM_Matrix[2][1], DCM_Matrix[2][2]);
-	yaw = atan2(DCM_Matrix[1][0], DCM_Matrix[0][0]);
-
+	orientation[0] = -asin(dcmMatrix[2][0]);
+	orientation[1] = atan2(dcmMatrix[2][1], dcmMatrix[2][2]);
+	orientation[2] = atan2(dcmMatrix[1][0], dcmMatrix[0][0]);
 }
-void Retrieve_rotation_matrix(float Rotation_Matrix[3][3])
+
+void Imu::retrieveRotationMatrix(float Rotation_Matrix[3][3])
 {
-
-	Rotation_Matrix = DCM_Matrix;
-
+	Rotation_Matrix = dcmMatrix;
 }
 
