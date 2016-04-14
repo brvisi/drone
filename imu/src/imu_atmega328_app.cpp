@@ -1,113 +1,79 @@
+/*
+ * project info:
+ * inertial measurement unit using dcm sensor fusion algorithm
+ * serial output (pitch(y), roll(x), yaw(z))
+ *
+ *
+ * Bruno Silva (brvisi@gmail.com)
+ */
+
 #include <Arduino.h>
 #include <Wire.h>
+#include <EEPROM.h>
+#include "GY85.h"
 
-#include <Matrix_Vector_Math.h>
-#include <DCM_algorithm.h>
-//#include <EEPROM.h>
+#define magnetoCalibration	 	0
+#define dataInterval 			20 // ms
 
-#define CALIB 0
-
-float G_Dt=0;
-
-unsigned int data_interval = 20; //ms
+float G_Dt=0; // gyroscope integration interval
 
 unsigned int timestamp;
 unsigned int timestamp_old;
 
-int calibration_counter=0;
-int EEPROM_ADDRESS=0;
-float EEPROM_VALUE= 0;
-
 float *ori;
-
-
 
 void setup() 
 {  
-  timestamp=millis();
-  
-  Serial.begin(115200);
-  
+	timestamp=millis();
+	Serial.begin(115200);
 
+	GY85 imu;
 
-  /*
-  if (CALIB == 1)
-  {  
-    Serial.println("CALIBRATION");
-    float MAG_RANGE[6]; // MAG_MAX_X; MAG_MIN_Y; MAG_MAX_Y; MAG_MIN_Y; MAG_MAX_Z; MAG_MIN_Z
- 
-    while(calibration_counter<3000)
-    {
-      Serial.println(String(calibration_counter));
-      magnetometer.readMag(mag);
-      //Serial.println("Mag: " + String(mag[0]) + "," + String(mag[1]) + "," + String(mag[2]));
-      if (MAG_RANGE[0]<mag[0]) { MAG_RANGE[0] = mag[0]; }
-      if (MAG_RANGE[1]>mag[0]) { MAG_RANGE[1] = mag[0]; }
-      if (MAG_RANGE[2]<mag[1]) { MAG_RANGE[2] = mag[1]; }
-      if (MAG_RANGE[3]>mag[1]) { MAG_RANGE[3] = mag[1]; }
-      if (MAG_RANGE[4]<mag[2]) { MAG_RANGE[4] = mag[2]; }
-      if (MAG_RANGE[5]>mag[2]) { MAG_RANGE[5] = mag[2]; }    
-  
-      delay(10);
-      calibration_counter++;
-    }
-    for (int i=0; i<6; i++)
-    {
-      EEPROM.put(EEPROM_ADDRESS + (i*(sizeof(float))), MAG_RANGE[i]);
-    }
-  }
-  
-  EEPROM_ADDRESS=0;  //EEPROM ADDRESS 0 - MAG_OFFSET
-  for(int i=0;i<6;i++)
-  {
-    EEPROM.get(EEPROM_ADDRESS + (i*(sizeof(float))),mag_offset[i]);
-  }
-   */
+	if (magnetoCalibration == 1)
+	{
+		Serial.println("MAGNETOMETER CALIBRATION STARTED");
+		imu.magCalibration();
+		Serial.println("CALIBRATION FINISHED");
+	}
+
 }
 
-void loop() {
+void loop()
+{
 
-	Imu gy_85;
+	GY85 imu;
+
 	while(1)
 	{
-		if ((millis() - timestamp) >= data_interval)
+		if ((millis() - timestamp) >= dataInterval)
 		  {
 			timestamp_old = timestamp;
 			timestamp = millis();
 			if (timestamp > timestamp_old) { G_Dt = (float)(timestamp - timestamp_old) / 1000.0f; }
 			else { G_Dt = 0; }
 
+			ori = imu.getOrientation(1, G_Dt);
 
-			ori = gy_85.getOrientation(1, G_Dt);
 			Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]));
 			//Serial.println(String(ori[0]* 57.29) + "," + String(ori[1]* 57.29) + "," + String(ori[2]* 57.29));
 			//Serial.println("P: " + String(ori[0]* 57.29) + " R: " + String(ori[1]* 57.29) + " Y: " + String(ori[2]* 57.29));
-			delay(50);
 		  }
 	}
-
-
-
+}
 
 
 /*
-
-    //DCM_algorithm(acc, gyro, mag, G_Dt, true, pitch_deg, roll_deg, yaw_deg);
-
-  //String stringAcc =  "Acc: " + String(acc[0]) + "," + String(acc[1]) + "," + String(acc[2]);
-  //String stringGyro = "Gyro: " + String(gyro[0]) + "," + String(gyro[1]) + "," + String(gyro[2]);
-  //String stringMag = "Mag: " + String(mag[0]) + "," + String(mag[1]) + "," + String(mag[2]);
-  
-  //Serial.println(stringAcc);
-  //Serial.println(stringGyro);
-  //Serial.println(stringMag);
-
-  //Serial.println(String(pitch* 57.29) + "," + String(roll* 57.29) + "," + String(yaw* 57.29) + "," + String(G_Dt)); //Em graus
-  //;Serial.println(String(pitch_deg) + "," + String(roll_deg) + "," + String(yaw_deg) + "," + String(G_Dt)); //Em graus
-  //Serial.println("P: " + String(pitch_deg) + " R: " + String(roll_deg) + " Y: " + String(yaw_deg)); //Em graus
-  
-  //Serial.println(String(millis() - timestamp));
-  //delay(1);
-  }
-*/
-}
+ * float Atmega328P = 4 bytes (32bits)
+ * char Atmega328P = 1 byte (8bits)
+ *
+ * program output max = charvector(6) + char + charvector(6) + char + charvector(6) - float + char + float + char + float
+ * max outputsizeof = 6 + 1 + 6 + 1 + 6 = 20 bytes = 160 bits
+ *
+ * target data interval = 5 ms (1/200 sec)
+ * 160 bits x 200 = 32000
+ * Serial interface baud rate of 38400(bps) should be enough for a 5ms data interval
+ *
+ * target data interval = 1ms (1/1000 sec)
+ * 160 x 1000 = 160000
+ * Serial interface baud rate of 230400(bps) should be enough for 1ms data interval
+ */
