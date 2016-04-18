@@ -44,11 +44,13 @@ class HMC5883L
 public:
 	HMC5883L();
 	void initialize();
-	void readMag(float rawData[3]);
-	void scaleMag(float scaledData[3]);
-	void calibrateMag(float calibratedData[3]);
-	void setGain(float fieldRange);
+	void getOrientationVector(float (&data)[3]);
 private:
+	float orientationVector[3]; // x, y, z
+	void read();
+	void scaleGain();
+	void applyCalibration();
+	void setGain(float fieldRange);
 	void writeTo(byte address, byte val);
 	void readFrom(byte address, int num, byte buff[]);
 	float HMC5883L_SCALE_FACTOR;

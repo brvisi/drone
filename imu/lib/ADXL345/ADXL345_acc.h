@@ -55,9 +55,13 @@ class ADXL345
 public:
 	ADXL345();
 	void initialize();
-	void readAccel(float raw_data[3]);
-	float gains[3];
+	void getOrientationVector(float (&data)[3]);
 private:
+	float orientationVector[3]; // x, y, z
+	float offset[3];
+	void read();
+	void scale();
+	void applyCalibration();
 	void writeTo(byte address, byte val);
 	void readFrom(byte address, int num, byte buff[]);
 	byte _buff[6]; 

@@ -1,0 +1,1 @@
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_gui\IMU_sensor_headtracker\bin\Release\imu_gui.exe.config

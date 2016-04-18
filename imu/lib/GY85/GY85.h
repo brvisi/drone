@@ -9,6 +9,18 @@
 #ifndef GY85_H
 #define GY85_H
 
+//#define DEBUG
+
+#ifdef SERIAL_TRACE
+
+#define SERIAL_TRACE(a) Serial.println(a)
+
+#else
+
+#define SERIAL_TRACE(a)
+
+#endif
+
 #include "ADXL345_acc.h"
 #include "HMC5883L_mag.h"
 #include "ITG3200_gyro.h"
@@ -20,6 +32,8 @@
 #define Ki_ROLLPITCH 	0.00002f
 #define Kp_YAW 			1.2f
 #define Ki_YAW 			0.00002f
+
+
 
 class GY85
 {

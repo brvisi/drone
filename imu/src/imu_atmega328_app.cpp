@@ -10,32 +10,32 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <EEPROM.h>
+
 #include "GY85.h"
 
-#define magnetoCalibration	 	0
-#define dataInterval 			20 // ms
+#define SERIALOUTPUT__BAUDRATE 	115200
+#define CALIBRATION__MAGNETO	0
+#define DATA_INTERVAL 			20 // ms
 
 float G_Dt=0; // gyroscope integration interval
-
 unsigned int timestamp;
 unsigned int timestamp_old;
-
 float *ori;
 
 void setup() 
 {  
 	timestamp=millis();
-	Serial.begin(115200);
+	Serial.begin(SERIALOUTPUT__BAUDRATE);
 
-	GY85 imu;
+/*	GY85 imu;
 
-	if (magnetoCalibration == 1)
+	if (CALIBRATION__MAGNETO == 1)
 	{
 		Serial.println("MAGNETOMETER CALIBRATION STARTED");
 		imu.magCalibration();
 		Serial.println("CALIBRATION FINISHED");
 	}
-
+*/
 }
 
 void loop()
@@ -45,16 +45,22 @@ void loop()
 
 	while(1)
 	{
-		if ((millis() - timestamp) >= dataInterval)
+		if ((millis() - timestamp) >= DATA_INTERVAL)
 		  {
 			timestamp_old = timestamp;
 			timestamp = millis();
-			if (timestamp > timestamp_old) { G_Dt = (float)(timestamp - timestamp_old) / 1000.0f; }
-			else { G_Dt = 0; }
+			if (timestamp > timestamp_old)
+			{
+				G_Dt = (float)(timestamp - timestamp_old) / 1000.0f;
+			}
+			else
+			{
+				G_Dt = 0;
+			}
 
-			ori = imu.getOrientation(1, G_Dt);
+			ori = imu.getOrientation(1, G_Dt); //p r y
 
-			Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]));
+			Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]) + "," + String(G_Dt) );
 			//Serial.println(String(ori[0]* 57.29) + "," + String(ori[1]* 57.29) + "," + String(ori[2]* 57.29));
 			//Serial.println("P: " + String(ori[0]* 57.29) + " R: " + String(ori[1]* 57.29) + " Y: " + String(ori[2]* 57.29));
 		  }

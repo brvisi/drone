@@ -51,13 +51,34 @@ void ADXL345::initialize()
 	writeTo(ADXL345_POWER_CTL, 0x08);
 }
 
-void ADXL345::readAccel(float raw_data[3])
+void ADXL345::read()
 {
 	readFrom(ADXL345_DATAX0, ADXL345_TO_READ, _buff);  //Read ADXL345_TO_READ bytes from ADXL345_DATAX0 onwards and store it in _buff
 	
-	raw_data[0] = (((int)_buff[1]) << 8) | _buff[0];   
-	raw_data[1] = (((int)_buff[3]) << 8) | _buff[2];
-	raw_data[2] = (((int)_buff[5]) << 8) | _buff[4];
+	orientationVector[0] = (((int)_buff[1]) << 8) | _buff[0];
+	orientationVector[1] = (((int)_buff[3]) << 8) | _buff[2];
+	orientationVector[2] = (((int)_buff[5]) << 8) | _buff[4];
+
 }
 
+void ADXL345::applyCalibration()
+{
+
+
+}
+
+void ADXL345::scale()
+{
+
+
+}
+
+void ADXL345::getOrientationVector(float (&data)[3])
+{
+	read();
+	applyCalibration();
+	scale();
+
+	memcpy(data, orientationVector, sizeof(data));
+}
 

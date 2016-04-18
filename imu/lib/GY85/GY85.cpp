@@ -24,13 +24,12 @@ float Temporary_Matrix[3][3] ={{ 0, 0, 0 },{ 0, 0, 0 },{ 0, 0, 0 }};
 
 GY85::GY85()
 {
+	delay(50); // time for sensors to start
 	accelerometer.initialize();
-	delay(10);
 	gyroscope.initialize();
-	delay(10);
 	magnetometer.initialize();
-	delay(10);
 
+	delay(20); // time for sensors to start collecting data
 	initRotationMatrix(); // for dcm
 }
 
@@ -44,7 +43,7 @@ void GY85::magCalibration()
 	while(calibration_counter<3000)
 	{
 		//Serial.println(String(calibration_counter));
-		magnetometer.readMag(rawData);
+		//magnetometer.getOrientationVector(magVector); // -----> need function to read rawData
 
 		//Serial.println("Mag: " + String(mag[0]) + "," + String(mag[1]) + "," + String(mag[2]));
 		if (magRange[0]<rawData[0]) { magRange[0] = rawData[0]; }
@@ -68,42 +67,53 @@ void GY85::magCalibration()
 
 float* GY85::getOrientation(int algorithm, float G_dt)
 {
-/*
-	float pitch, roll, yaw;
+
+
 	float xAxis[3] = { 1.0f, 0.0f, 0.0f };
 	float temp1[3] = { 0, 0, 0};
 	float temp2[3] = { 0, 0, 0};
 
-	accelerometer.readAccel(accVector);
+	accelerometer.getOrientationVector(accVector);
 
 	gyroscope.readGyro(gyrVector);
 	gyroscope.scaleGyro(gyrVector);
 
-	magnetometer.readMag(magVector);
-	magnetometer.scaleMag(magVector);
+	magnetometer.getOrientationVector(magVector);
 
-	pitch = atan2(accVector[0], sqrt(accVector[1] * accVector[1] + accVector[2] * accVector[2]));
 
-	Vector_Cross_Product(temp1, accVector, xAxis);
-	Vector_Cross_Product(temp2, xAxis, temp1);
+	//Serial.println(String(magVector[0]) + "," + String(magVector[1]) + "," + String(magVector[2]));
 
-	roll = atan2(temp2[1], temp2[2]);
+	// roll
+	orientation[0] = atan2(accVector[0], sqrt(accVector[1] * accVector[1] + accVector[2] * accVector[2]));
 
+	//Vector_Cross_Product(temp1, accVector, xAxis);
+	//Vector_Cross_Product(temp2, xAxis, temp1);
+
+	// Normally using x-z-plane-component/y-component of compensated gravity vector
+	// roll = atan2(temp2[1], sqrt(temp2[0] * temp2[0] + temp2[2] * temp2[2]));
+	// Since we compensated for pitch, x-z-plane-component equals z-component:
+
+	// pitch
+	//orientation[1] = atan2(temp2[1], temp2[2]);
+
+	orientation[1] = 0; //atan2(accVector[1], sqrt(accVector[0] * accVector[0] + accVector[2] * accVector[2]));
 	// Tilt compensated magnetic field X
-	float mag_x = magVector[0] * cos(pitch) + magVector[1] * sin(roll) * sin(pitch) + magVector[2] * cos(roll) * sin(pitch);
+	float mag_x = magVector[0] * cos(orientation[0]) + magVector[1] * sin(orientation[1]) * sin(orientation[0]) + magVector[2] * cos(orientation[1]) * sin(orientation[0]);
 	// Tilt compensated magnetic field Y
-	float mag_y = magVector[1] * cos(roll) - magVector[2] * sin(roll);
-	yaw = atan2(mag_y, mag_x);
+	float mag_y = magVector[1] * cos(orientation[1]) - magVector[2] * sin(orientation[1]);
 
-	orientation[0] = pitch;
-	orientation[1] = roll;
-	orientation[2] = yaw;
+	// yaw
+	orientation[2] = atan2(-mag_y, mag_x);
+
+	orientation[0] *= 57.3;
+	orientation[1] *= 57.3;
+	orientation[2] *= 57.3;
 	return orientation;
-*/
 
-	dcmAlgorithm(G_dt, true, orientation); 	// pitch, roll, yaw
 
-	return orientation;
+	//dcmAlgorithm(G_dt, true, orientation); 	// pitch, roll, yaw
+
+	//return orientation;
 }
 
 void GY85::dcmAlgorithm(float G_dt, bool useDriftCorrection, float (&orientationDeg)[3])
@@ -111,14 +121,12 @@ void GY85::dcmAlgorithm(float G_dt, bool useDriftCorrection, float (&orientation
 	gyr_dt = G_dt;
 	drift_correction = useDriftCorrection;
 
-	accelerometer.readAccel(accVector);
+	accelerometer.getOrientationVector(accVector);
 
 	gyroscope.readGyro(gyrVector);
 	gyroscope.scaleGyro(gyrVector);
 
-	magnetometer.readMag(magVector);
-	magnetometer.calibrateMag(magVector);
-	magnetometer.scaleMag(magVector);
+	magnetometer.getOrientationVector(magVector);
 
 	matrixUpdate();
 	normalize();
@@ -140,20 +148,22 @@ void GY85::initRotationMatrix()
 	float temp1[3] = { 0, 0, 0};
 	float temp2[3] = { 0, 0, 0};
 
-	accelerometer.readAccel(accVector);
+	accelerometer.getOrientationVector(accVector);
 
 	gyroscope.readGyro(gyrVector);
 	gyroscope.scaleGyro(gyrVector);
 
-	magnetometer.readMag(magVector);
-	magnetometer.calibrateMag(magVector);
-	magnetometer.scaleMag(magVector);
+	magnetometer.getOrientationVector(magVector);
 
 	// roll
 	orientation[0] = atan2(accVector[0], sqrt(accVector[1] * accVector[1] + accVector[2] * accVector[2]));
 
 	Vector_Cross_Product(temp1, accVector, xAxis);
 	Vector_Cross_Product(temp2, xAxis, temp1);
+
+	// Normally using x-z-plane-component/y-component of compensated gravity vector
+	// roll = atan2(temp2[1], sqrt(temp2[0] * temp2[0] + temp2[2] * temp2[2]));
+	// Since we compensated for pitch, x-z-plane-component equals z-component:
 
 	// pitch
 	orientation[1] = atan2(temp2[1], temp2[2]);

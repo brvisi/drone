@@ -15,7 +15,7 @@
 
 HMC5883L::HMC5883L()
 {
-	HMC5883L_SCALE_FACTOR = ((1 / 1090) * 1000); // default configuration: field range 1.3Ga
+	HMC5883L_SCALE_FACTOR = (1000 / 1090); // default configuration: field range 1.3Ga
 }
 
 void HMC5883L::writeTo(byte address, byte val)
@@ -58,42 +58,42 @@ void HMC5883L::initialize()
 
 	if (HMC5883L_DefaultFieldRange==0.88) // Nominal gain configuration (HMC5883L_ConfigurationRegisterB)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 1370) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 1370.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0x00);
 	}
 	else if (HMC5883L_DefaultFieldRange==1.3)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 1090) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 1090.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0x20);
 	}
 	else if (HMC5883L_DefaultFieldRange==1.9)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 820) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 820.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0x40);
 	}
 	else if (HMC5883L_DefaultFieldRange==2.5)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 660) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 660.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0x60);
 	}
 	else if (HMC5883L_DefaultFieldRange==4.0)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 440) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 440.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0x80);
 	}
 	else if (HMC5883L_DefaultFieldRange==4.7)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 390) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 390.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0xA0);
 	}
 	else if (HMC5883L_DefaultFieldRange==5.6)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 330) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 330.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0xC0);
 	}
 	else if (HMC5883L_DefaultFieldRange==8.1)
 	{
-		HMC5883L_SCALE_FACTOR = ((1 / 230) * 1000);
+		HMC5883L_SCALE_FACTOR = (1000.0f / 230.0f);
 		writeTo(HMC5883L_ConfigurationRegisterB, 0xE0);
 	}
 }
@@ -142,42 +142,58 @@ void HMC5883L::setGain(float fieldRange)
 		}
 		else // out of range - return to defaults
 		{
-			HMC5883L_SCALE_FACTOR = ((1 / 1090) * 1000);
+			HMC5883L_SCALE_FACTOR = (1000 / 1090);
 			writeTo(HMC5883L_ConfigurationRegisterB, 0x20);
 		}
 }
 
-void HMC5883L::readMag(float rawData[3])
+void HMC5883L::read()
 {
 	readFrom(HMC5883L_AxisXDataRegisterMSB, HMC5883L_TO_READ, _buff); //Read HMC5883L_TO_READ bytes from HMC5883L_AxisXDataRegisterMSB onwards and store it in _buff
 		
-	rawData[0] = (((int)_buff[0]) << 8) | _buff[1];
-	rawData[2] = (((int)_buff[2]) << 8) | _buff[3];  //----->>>  X, Z, Y
-	rawData[1] = (((int)_buff[4]) << 8) | _buff[5];
+	orientationVector[0] = (((int)_buff[0]) << 8) | _buff[1];
+	orientationVector[2] = (((int)_buff[2]) << 8) | _buff[3];  //----->>>  X, Z, Y
+	orientationVector[1] = (((int)_buff[4]) << 8) | _buff[5];
 }
 
-void HMC5883L::scaleMag(float scaledData[3])
+void HMC5883L::scaleGain()
 {
-	scaledData[0] *= HMC5883L_SCALE_FACTOR;
-	scaledData[1] *= HMC5883L_SCALE_FACTOR;
-	scaledData[2] *= HMC5883L_SCALE_FACTOR;
+	orientationVector[0] *= HMC5883L_SCALE_FACTOR;
+	orientationVector[1] *= HMC5883L_SCALE_FACTOR;
+	orientationVector[2] *= HMC5883L_SCALE_FACTOR;
 }
 
-void HMC5883L::calibrateMag(float calibratedData[3])
+void HMC5883L::applyCalibration()
 {
 	int EEPROM_ADDRESS=0;  // eeprom offset for magnetometer range values
-	float offset[6];
+	float valueRange[6]; //MAG_X_MAX, MAG_X_MIN, MAG_Y_MAX, MAG_Y_MIN, MAG_Z_MAX, MAG_Z_MIN
 
 	for(int i=0;i<6;i++)
 	{
-		EEPROM.get(EEPROM_ADDRESS + (i*(sizeof(float))),offset[i]);
+		EEPROM.get(EEPROM_ADDRESS + (i*(sizeof(float))),valueRange[i]);
 	}
 
-	float offsetX = (offset[0] + offset[1]) / 2;
-	float offsetY = (offset[2] + offset[3]) / 2;
-	float offsetZ = (offset[4] + offset[5]) / 2;
+	float offsetX = (valueRange[0] + valueRange[1]) / 2.0f;
+	float offsetY = (valueRange[2] + valueRange[3]) / 2.0f;
+	float offsetZ = (valueRange[4] + valueRange[5]) / 2.0f;
 
-	calibratedData[0] += offsetX;
-	calibratedData[1] += offsetY;
-	calibratedData[2] += offsetZ;
+	// #define MAGN_X_SCALE (100.0f / (MAGN_X_MAX - MAGN_X_OFFSET))
+	float mag_x_scale = (100.0f / (valueRange[0] - offsetX));
+	float mag_y_scale = (100.0f / (valueRange[2] - offsetY));
+	float mag_z_scale = (100.0f / (valueRange[4] - offsetZ));
+
+	// magnetom[0] = (magnetom[0] - MAGN_X_OFFSET) * MAGN_X_SCALE;
+	orientationVector[0] = (orientationVector[0] - offsetX) * mag_x_scale;
+	orientationVector[1] = (orientationVector[1] - offsetY) * mag_y_scale;
+	orientationVector[2] = (orientationVector[2] - offsetZ) * mag_z_scale;
+}
+
+void HMC5883L::getOrientationVector(float (&data)[3])
+{
+	read();
+	//applyCalibration();
+	scaleGain();
+
+	//Serial.println(HMC5883L_SCALE_FACTOR);
+	memcpy(data, orientationVector, sizeof(data));
 }

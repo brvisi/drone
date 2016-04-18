@@ -1,0 +1,57 @@
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.exe.config
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.exe
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.pdb
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.csprojResolveAssemblyReference.cache
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.Form1.resources
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.Properties.Resources.resources
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.csproj.GenerateResource.Cache
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.exe
+c:\users\brunovisi\documents\visual studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.pdb
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.dll
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.dll
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.pdb
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.xml
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.pdb
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.xml
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.graph.resources
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\HostingWpfUserControlInWf.dll
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\HostingWpfUserControlInWf.pdb
+C:\Users\brunovisi\Documents\Visual Studio 2015\Projects\IMU_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.graphic_model.resources
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.exe.config
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.exe
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.pdb
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.csprojResolveAssemblyReference.cache
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.Form1.resources
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.graphic_model.resources
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.graph.resources
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.Properties.Resources.resources
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.csproj.GenerateResource.Cache
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.exe
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.pdb
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\HostingWpfUserControlInWf.dll
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.dll
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.dll
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\HostingWpfUserControlInWf.pdb
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.pdb
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.xml
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.pdb
+C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.xml
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.exe.config
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.exe
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.pdb
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.exe
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\IMU_sensor_headtracker.pdb
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\HostingWpfUserControlInWf.dll
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.dll
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.dll
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\HostingWpfUserControlInWf.pdb
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.pdb
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.xml
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.pdb
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\bin\Debug\OxyPlot.WindowsForms.xml
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.csprojResolveAssemblyReference.cache
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.Form1.resources
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.graphic_model.resources
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.graph.resources
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.Properties.Resources.resources
+C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\imu_sensor_headtracker\IMU_sensor_headtracker\obj\Debug\IMU_sensor_headtracker.csproj.GenerateResource.Cache
