@@ -54,7 +54,6 @@ class ADXL345
 {
 public:
 	ADXL345();
-	void initialize();
 	void getOrientationVector(float (&data)[3]);
 private:
 	float orientationVector[3]; // x, y, z

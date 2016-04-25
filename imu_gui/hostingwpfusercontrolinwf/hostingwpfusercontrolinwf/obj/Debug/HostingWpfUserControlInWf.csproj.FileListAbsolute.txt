@@ -20,13 +20,3 @@ C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\HostingWpfUserControl
 C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.csproj.GenerateResource.Cache
 C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.dll
 C:\Users\Bruno.Silva\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.pdb
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\bin\Debug\HostingWpfUserControlInWf.dll
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\bin\Debug\HostingWpfUserControlInWf.pdb
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\UserControl1.baml
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\UserControl1.g.cs
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf_MarkupCompile.cache
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.g.resources
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.Properties.Resources.resources
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.csproj.GenerateResource.Cache
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.dll
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Debug\HostingWpfUserControlInWf.pdb

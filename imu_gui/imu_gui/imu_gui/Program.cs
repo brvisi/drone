@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 
 
-namespace IMU_sensor_headtracker
+namespace IMU_module
 {
     static class Program
     {

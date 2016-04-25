@@ -7,7 +7,7 @@ using OxyPlot.Axes;
 
 using Timer = System.Timers.Timer;
 
-namespace IMU_sensor_headtracker
+namespace IMU_module
 {
     public partial class graph : Form
     {

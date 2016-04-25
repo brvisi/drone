@@ -12,7 +12,12 @@
 #include "ITG3200_gyro.h"
 #include <Wire.h>
 
-ITG3200::ITG3200() 	{}
+ITG3200::ITG3200()
+{
+	Wire.begin();
+
+	writeTo(ITG3200_DLPF_FS, 0x18); // DLPF_CFG = 3, FS_SEL = 3
+}
 
 void ITG3200::writeTo(byte address, byte val)
 {
@@ -44,26 +49,37 @@ void ITG3200::readFrom(byte address, int num, byte _buff[])
 	Wire.endTransmission();  
 }
 
-void ITG3200::initialize()
-{
-	Wire.begin();
-  
-	writeTo(ITG3200_DLPF_FS, 0x18); // DLPF_CFG = 3, FS_SEL = 3
-}
-
-void ITG3200::readGyro(float rawData[3])
+void ITG3200::read()
 {
 	readFrom(ITG3200_GYRO_XOUT_H, ITG3200_TO_READ, _buff); 
 	
-	rawData[0] = (((int)_buff[0]) << 8) | _buff[1];
-	rawData[1] = (((int)_buff[2]) << 8) | _buff[3];
-	rawData[2] = (((int)_buff[4]) << 8) | _buff[5];
+	orientationVector[0] = (((int)_buff[0]) << 8) | _buff[1];
+	orientationVector[1] = (((int)_buff[2]) << 8) | _buff[3];
+	orientationVector[2] = (((int)_buff[4]) << 8) | _buff[5];
 }
 
-void ITG3200::scaleGyro(float scaledData[3])
+void ITG3200::scale()
 {
-	scaledData[0] *= ITG3200_SCALE_FACTOR;
-	scaledData[1] *= ITG3200_SCALE_FACTOR;
-	scaledData[2] *= ITG3200_SCALE_FACTOR;
+	orientationVector[0] *= ITG3200_SCALE_FACTOR;
+	orientationVector[1] *= ITG3200_SCALE_FACTOR;
+	orientationVector[2] *= ITG3200_SCALE_FACTOR;
+}
+
+void ITG3200::applyCalibration()
+{
+
+}
+
+/*
+ * getOrientationVector method:
+ * store calibrated and scaled accelerometer data(x,y,z) in '&data' parameter
+ */
+void ITG3200::getOrientationVector(float (&data)[3])
+{
+	read();
+	applyCalibration();
+	scale();
+
+	memcpy(data, orientationVector, sizeof(data));
 }
 

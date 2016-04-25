@@ -43,7 +43,6 @@ class HMC5883L
 {
 public:
 	HMC5883L();
-	void initialize();
 	void getOrientationVector(float (&data)[3]);
 private:
 	float orientationVector[3]; // x, y, z

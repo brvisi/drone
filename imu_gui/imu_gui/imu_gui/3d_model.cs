@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IMU_sensor_headtracker
+namespace IMU_module
 {
     public partial class graphic_model : Form
     {

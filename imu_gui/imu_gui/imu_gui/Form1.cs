@@ -1,13 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
-using System.Threading;
-using System.Timers;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace IMU_sensor_headtracker
+namespace IMU_module
 {
 
     public partial class Form1 : Form
@@ -18,23 +15,16 @@ namespace IMU_sensor_headtracker
 
         System.Timers.Timer _timer = new System.Timers.Timer(10000);
 
-        public float yaw_offset=0; //alinhar YAW
+        public float f_yaw_offset=0; //align YAW
 
         Stopwatch sw_math = new Stopwatch();
         Stopwatch sw_interface = new Stopwatch();
-        long sw_math_sample = 0;
-        long sw_math_total_time = 0;
-        long sw_interface_sample = 0;
-        long sw_interface_total_time = 0;
 
         static class Constants
         {
             public const int data_interval = 20; //ms
 
         }
-
-        // Calculate the scaled gyro readings in radians per second
-        
 
         public Form1()
         {
@@ -97,26 +87,19 @@ namespace IMU_sensor_headtracker
             }
 
         }
-
-        private void yawoffset_Click(object sender, EventArgs e)
-        {
-           // yaw_offset_text.Text = yaw_dcm.Text;
-            yaw_offset = float.Parse(yaw_dcm.Text);
-        }
-
     
         private void start_serial_Click(object sender, EventArgs e)
         {
             if (!bw_serial_data.IsBusy)
             {
                 bw_serial_data.RunWorkerAsync();
-                this.system_message.Text = "Background worker SERIAL started";
+                this.system_message.Text = "SERIAL thread running";
 
 
             }
             else
             {
-                this.system_message.Text = "Background worker SERIAL already running";
+                this.system_message.Text = "SERIAL thread already running";
             }
 
         }
@@ -172,9 +155,18 @@ namespace IMU_sensor_headtracker
             Sensors_structure serial_display_data = new Sensors_structure();
             serial_display_data = e.UserState as Sensors_structure;
 
-            COM_data.Text = serial_display_data.pitch.ToString() + ',' + serial_display_data.roll.ToString() + ',' + serial_display_data.yaw.ToString();
+            
 
-            graphics.userControl11.Rotate(serial_display_data.roll, serial_display_data.pitch, serial_display_data.yaw);
+            sender_info.Text = serial_display_data.pitch.ToString() + ',' + serial_display_data.roll.ToString() + ',' + serial_display_data.yaw.ToString();
+
+            yaw_dcm.Text = serial_display_data.yaw.ToString();
+            pitch_dcm.Text = serial_display_data.pitch.ToString();
+            roll_dcm.Text = serial_display_data.roll.ToString();
+
+            //offset compensated yaw
+            float compensated_yaw = serial_display_data.yaw - f_yaw_offset;
+
+            graphics.userControl11.Rotate(serial_display_data.roll, serial_display_data.pitch, compensated_yaw);
 
             chart_1.euler_angles[0] = serial_display_data.yaw;
             chart_1.euler_angles[1] = serial_display_data.pitch;
@@ -186,9 +178,13 @@ namespace IMU_sensor_headtracker
 
         private void bw_serial_data_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.system_message.Text = "Background worker SERIAL stopped";
+            this.system_message.Text = "SERIAL thread stopped";
         }
 
-
+        private void alignyaw_Click(object sender, EventArgs e)
+        {
+            f_yaw_offset = float.Parse(yaw_dcm.Text);
+            yaw_offset.Text = f_yaw_offset.ToString();
+        }
     }
 }
