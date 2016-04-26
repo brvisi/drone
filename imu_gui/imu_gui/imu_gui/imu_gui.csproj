@@ -116,9 +116,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="referencias.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\HostingWpfUserControlInWf\HostingWpfUserControlInWf\HostingWpfUserControlInWf.csproj">
       <Project>{54fcdd38-a632-4f2e-8b8a-52ca5c1f8d7b}</Project>
       <Name>HostingWpfUserControlInWf</Name>

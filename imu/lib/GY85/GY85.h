@@ -21,9 +21,9 @@
 
 #endif
 
-#include "ADXL345_acc.h"
-#include "HMC5883L_mag.h"
-#include "ITG3200_gyro.h"
+#include "ADXL345.h"
+#include "HMC5883L.h"
+#include "ITG3200.h"
 
 #define gravity 		256.0f
 #define pi 				3.14159265359

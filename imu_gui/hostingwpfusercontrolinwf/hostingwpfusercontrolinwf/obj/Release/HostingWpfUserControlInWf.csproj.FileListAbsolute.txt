@@ -8,14 +8,3 @@ c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlIn
 c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.csproj.GenerateResource.Cache
 c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.dll
 c:\Users\brunovisi\Documents\Visual Studio 2015\Projects\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.pdb
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\bin\Release\HostingWpfUserControlInWf.dll
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\bin\Release\HostingWpfUserControlInWf.pdb
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.csprojResolveAssemblyReference.cache
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\UserControl1.baml
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\UserControl1.g.cs
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf_MarkupCompile.cache
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.g.resources
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.Properties.Resources.resources
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.csproj.GenerateResource.Cache
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.dll
-C:\Users\Bruno.Silva\Documents\GitHub\drone\imu_gui\HostingWpfUserControlInWf\HostingWpfUserControlInWf\obj\Release\HostingWpfUserControlInWf.pdb
