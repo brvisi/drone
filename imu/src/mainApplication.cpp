@@ -12,6 +12,7 @@
 #include <EEPROM.h>
 
 #include "GY85.h"
+#include "motion.h"
 
 #define SERIALOUTPUT__BAUDRATE 	115200
 #define CALIBRATION__MAGNETO	0
@@ -38,13 +39,28 @@ void setup()
 */
 }
 
+
 void loop()
 {
 
 	GY85 imu;
 
+	rotor led(PD5);
+	rotor led2(PD6);
+
+	rotor led3(PD3);
+	rotor led4(11);
+
+	led.setPWMSpeed(20);
+	led2.setPWMSpeed(40);
+
+	led3.setPWMSpeed(30);
+	led4.setPWMSpeed(200);
+
 	while(1)
 	{
+
+
 		if ((millis() - timestamp) >= DATA_INTERVAL)
 		  {
 			timestamp_old = timestamp;
@@ -60,13 +76,17 @@ void loop()
 
 			ori = imu.getOrientation(1, G_Dt); //p r y
 
-			Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]) + "," + String(G_Dt) );
-			//Serial.println(String(ori[0]* 57.29) + "," + String(ori[1]* 57.29) + "," + String(ori[2]* 57.29));
-			//Serial.println("P: " + String(ori[0]* 57.29) + " R: " + String(ori[1]* 57.29) + " Y: " + String(ori[2]* 57.29));
+
+			led.setPWMSpeed(1);
+			led2.setPWMSpeed(ori[2]);
+			led3.setPWMSpeed(ori[2]);
+			led4.setPWMSpeed(ori[2]);
+
+			//Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]) + "," + String(G_Dt) );
 		  }
+
 	}
 }
-
 
 /*
  * float Atmega328P = 4 bytes (32bits)

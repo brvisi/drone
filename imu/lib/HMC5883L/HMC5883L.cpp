@@ -7,12 +7,11 @@
  * Bruno Silva (brvisi@gmail.com)
  */
 
-#include "HMC5883L.h"
-
 #include <Arduino.h>
 #include <Wire.h>
 #include <EEPROM.h>
 
+#include "HMC5883L.h"
 /*
  * object constructor:
  * initialize I2C communication

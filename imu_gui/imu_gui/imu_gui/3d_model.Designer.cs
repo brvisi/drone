@@ -53,7 +53,7 @@
             this.MaximizeBox = false;
             this.Name = "graphic_model";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Modelo 3D";
+            this.Text = "model";
             this.ResumeLayout(false);
 
         }
