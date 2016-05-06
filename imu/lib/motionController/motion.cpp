@@ -21,7 +21,7 @@ rotor::rotor(int rotorPin)
 		TCCR1A |= _BV(COM1A1) | _BV(COM1B1) | _BV(WGM10);
 		TCCR1B |= _BV(WGM12) | _BV(CS11) | _BV(CS10);
 
-		DDRB |= _BV(digitalPin);
+		DDRB |= _BV(digitalPin); //CORRIGIR PARA O INDICE CORRETO ( PORT B )
 	}
 	if ((digitalPin == 3)) //pin 3 / 11-> TIMER2 (Arduino nano)
 	{

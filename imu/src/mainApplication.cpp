@@ -13,6 +13,7 @@
 
 #include "GY85.h"
 #include "motion.h"
+#include "PID.h"
 
 #define SERIALOUTPUT__BAUDRATE 	115200
 #define CALIBRATION__MAGNETO	0
@@ -42,7 +43,6 @@ void setup()
 
 void loop()
 {
-
 	GY85 imu;
 
 	rotor led(PD5);
@@ -56,6 +56,14 @@ void loop()
 
 	led3.setPWMSpeed(30);
 	led4.setPWMSpeed(200);
+
+	PID rollPID(0.9,0,0.2);
+	PID pitchPID(0.9,0,0.2);
+	PID yawPID(0,0,0);
+	PID zPID(1,0,0);
+
+	float roll, pitch, yaw,zthrust=0;
+	float PWM1, PWM2, PWM3, PWM4=0;
 
 	while(1)
 	{
@@ -76,12 +84,32 @@ void loop()
 
 			ori = imu.getOrientation(1, G_Dt); //p r y
 
+			pitch = pitchPID.update(-ori[0]);
+			roll = rollPID.update(-ori[1]);
+			yaw = yawPID.update(-ori[2]);
+			zthrust = zPID.update(20); //rover dutyCicle 20%
 
-			led.setPWMSpeed(1);
-			led2.setPWMSpeed(ori[2]);
-			led3.setPWMSpeed(ori[2]);
-			led4.setPWMSpeed(ori[2]);
+			PWM1 = zthrust + pitch + yaw;
+			PWM2 = zthrust - roll - yaw;
+			PWM3 = zthrust - pitch + yaw;
+			PWM4 = zthrust + roll - yaw;
 
+			if (PWM1 > 100) { PWM1 = 100; }
+			if (PWM1 < 0) { PWM1 = 0; }
+			if (PWM2 > 100) { PWM2 = 100; }
+			if (PWM2 < 0) { PWM2 = 0; }
+			if (PWM3 > 100) { PWM3 = 100; }
+			if (PWM3 < 0) { PWM3 = 0; }
+			if (PWM4 > 100) { PWM4 = 100; }
+			if (PWM4 < 0) { PWM4 = 0; }
+
+			led.setPWMSpeed(PWM1);
+			led2.setPWMSpeed(PWM2);
+			led3.setPWMSpeed(PWM3);
+			led4.setPWMSpeed(PWM4);
+
+			Serial.println("PWM1:" + String(PWM1) + " PWM2:" + String(PWM2) + " PWM3:" + String(PWM3) + " PWM4:" + String(PWM4));
+			//Serial.println(String(pitch) + "," + String(roll) + "," + String(yaw));
 			//Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]) + "," + String(G_Dt) );
 		  }
 

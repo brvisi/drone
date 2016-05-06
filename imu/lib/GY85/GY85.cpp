@@ -64,51 +64,6 @@ void GY85::magCalibration()
 
 float* GY85::getOrientation(int algorithm, float G_dt)
 {
-
-/*
-	float xAxis[3] = { 1.0f, 0.0f, 0.0f };
-	float temp1[3] = { 0, 0, 0};
-	float temp2[3] = { 0, 0, 0};
-
-	accelerometer.getOrientationVector(accVector);
-
-	gyroscope.readGyro(gyrVector);
-	gyroscope.scaleGyro(gyrVector);
-
-	magnetometer.getOrientationVector(magVector);
-
-
-	//Serial.println(String(magVector[0]) + "," + String(magVector[1]) + "," + String(magVector[2]));
-
-	// pitch
-	orientation[0] = atan2(accVector[0], sqrt(accVector[1] * accVector[1] + accVector[2] * accVector[2]));
-
-	Vector_Cross_Product(temp1, accVector, xAxis);
-	Vector_Cross_Product(temp2, xAxis, temp1);
-
-	// Normally using x-z-plane-component/y-component of compensated gravity vector
-	// roll = atan2(temp2[1], sqrt(temp2[0] * temp2[0] + temp2[2] * temp2[2]));
-	// Since we compensated for pitch, x-z-plane-component equals z-component:
-
-	// roll
-	//orientation[1] =  -atan2(accVector[1], sqrt(accVector[0] * accVector[0] + accVector[2] * accVector[2]));
-
-	orientation[1] = -atan2(temp2[1], temp2[2]);
-	// Tilt compensated magnetic field X
-	float mag_x = magVector[0] * cos(orientation[0]) + magVector[1] * sin(orientation[1]) * sin(orientation[0]) + magVector[2] * cos(orientation[1]) * sin(orientation[0]);
-	// Tilt compensated magnetic field Y
-	float mag_y = magVector[1] * cos(orientation[1]) - magVector[2] * sin(orientation[1]);
-
-	// yaw
-	orientation[2] = -atan2(mag_y, mag_x);
-
-	orientation[0] *= 57.3;
-	orientation[1] *= 57.3;
-	orientation[2] *= 57.3;
-	return orientation;
-*/
-
-
 	dcmAlgorithm(G_dt, true, orientation); 	// pitch, roll, yaw
 
 	return orientation;
