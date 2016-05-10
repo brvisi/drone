@@ -1,6 +1,12 @@
+#include "../flightController/PID.h"
+
 #include <Arduino.h>
 
-#include "PID.h"
+
+PID::PID()
+{
+
+}
 
 PID::PID(float _kp, float _ki, float _kd)
 {
@@ -13,10 +19,22 @@ PID::PID(float _kp, float _ki, float _kd)
 
 	previousError = 0;
 
+	de=0;
+	dt=0;
+
 	Cp=0;
 	Ci=0;
 	Cd=0;
 }
+
+void PID::setConstants(float _kp, float _ki, float _kd)
+{
+	kp=_kp;
+	ki=_ki;
+	kd=_kd;
+
+}
+
 
 float PID::update(float error)
 {

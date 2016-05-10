@@ -11,9 +11,7 @@
 #include <Wire.h>
 #include <EEPROM.h>
 
-#include "GY85.h"
-#include "motion.h"
-#include "PID.h"
+#include "flightController.h"
 
 #define SERIALOUTPUT__BAUDRATE 	115200
 #define CALIBRATION__MAGNETO	0
@@ -27,7 +25,10 @@ float *ori;
 void setup() 
 {  
 	timestamp=millis();
+
 	Serial.begin(SERIALOUTPUT__BAUDRATE);
+
+
 
 /*	GY85 imu;
 
@@ -43,32 +44,11 @@ void setup()
 
 void loop()
 {
-	GY85 imu;
 
-	rotor led(PD5);
-	rotor led2(PD6);
-
-	rotor led3(PD3);
-	rotor led4(11);
-
-	led.setPWMSpeed(20);
-	led2.setPWMSpeed(40);
-
-	led3.setPWMSpeed(30);
-	led4.setPWMSpeed(200);
-
-	PID rollPID(0.9,0,0.2);
-	PID pitchPID(0.9,0,0.2);
-	PID yawPID(0,0,0);
-	PID zPID(1,0,0);
-
-	float roll, pitch, yaw,zthrust=0;
-	float PWM1, PWM2, PWM3, PWM4=0;
+	flightController __flightController;
 
 	while(1)
 	{
-
-
 		if ((millis() - timestamp) >= DATA_INTERVAL)
 		  {
 			timestamp_old = timestamp;
@@ -82,38 +62,17 @@ void loop()
 				G_Dt = 0;
 			}
 
-			ori = imu.getOrientation(1, G_Dt); //p r y
+			__flightController.stabilize(G_Dt);
 
-			pitch = pitchPID.update(-ori[0]);
-			roll = rollPID.update(-ori[1]);
-			yaw = yawPID.update(-ori[2]);
-			zthrust = zPID.update(20); //rover dutyCicle 20%
 
-			PWM1 = zthrust + pitch + yaw;
-			PWM2 = zthrust - roll - yaw;
-			PWM3 = zthrust - pitch + yaw;
-			PWM4 = zthrust + roll - yaw;
-
-			if (PWM1 > 100) { PWM1 = 100; }
-			if (PWM1 < 0) { PWM1 = 0; }
-			if (PWM2 > 100) { PWM2 = 100; }
-			if (PWM2 < 0) { PWM2 = 0; }
-			if (PWM3 > 100) { PWM3 = 100; }
-			if (PWM3 < 0) { PWM3 = 0; }
-			if (PWM4 > 100) { PWM4 = 100; }
-			if (PWM4 < 0) { PWM4 = 0; }
-
-			led.setPWMSpeed(PWM1);
-			led2.setPWMSpeed(PWM2);
-			led3.setPWMSpeed(PWM3);
-			led4.setPWMSpeed(PWM4);
-
-			Serial.println("PWM1:" + String(PWM1) + " PWM2:" + String(PWM2) + " PWM3:" + String(PWM3) + " PWM4:" + String(PWM4));
+			Serial.println("PWM1:" + String(__flightController.PWMtemp[0]) + " PWM2:" + String(__flightController.PWMtemp[1]) + " PWM3:" + String(__flightController.PWMtemp[2]) + " PWM4:" + String(__flightController.PWMtemp[3]));
 			//Serial.println(String(pitch) + "," + String(roll) + "," + String(yaw));
 			//Serial.println(String(ori[0]) + "," + String(ori[1]) + "," + String(ori[2]) + "," + String(G_Dt) );
 		  }
 
 	}
+
+
 }
 
 /*

@@ -1,10 +1,15 @@
+#ifndef PID_H
+#define PID_H
+
 class PID
 {
 public:
+	PID();
 	PID(float _kp, float _ki, float _kd);
-	void setKp(float Kp);
-	void setKi(float Ki);
-	void setKd(float Kd);
+	void setConstants(float _kp, float _ki, float _kd);
+	void setKp(float _Kp);
+	void setKi(float _Ki);
+	void setKd(float _Kd);
 	float update(float error);
 private:
 	float kp;
@@ -19,3 +24,5 @@ private:
 	float dt;
 	float de;
 };
+
+#endif
